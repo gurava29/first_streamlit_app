@@ -24,10 +24,10 @@ streamlit.dataframe(fruits_to_show)
 # New section to display fruityice api response
 streamlit.header("Fruityvice Fruit Advice!")
 import requests
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
-streamlit.text(fruityvice_response.json())
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+"kiwi")
+# streamlit.text(fruityvice_response.json()) -- write a separate line to point base URL
 
-# write your own comment -what does the next line do? 
+# Take the JSON version of the response and normalize it 
 fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
-# write your own comment - what does this do?
+# Output it the screen as a table
 streamlit.dataframe(fruityvice_normalized)
