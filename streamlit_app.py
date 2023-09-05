@@ -74,6 +74,5 @@ streamlit.stop()
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
 
- 
 # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
 # streamlit.text("Hello from Snowflake:")
