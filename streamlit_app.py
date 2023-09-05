@@ -25,18 +25,22 @@ fruits_to_show=my_fruit_list.loc[fruits_selected]
 streamlit.dataframe(fruits_to_show)
 # New section to display fruityice api response
 streamlit.header("Fruityvice Fruit Advice!")
-fruit_choice1=streamlit.text_input('What fruit would you like information about?', 'kiwi')
-streamlit.write('The user entered', fruit_choice1)
-
-
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice1)
+try:
+        fruit_choice1=streamlit.text_input('What fruit would you like information about?')
+        if not fruit_choice1:
+                streamlit.error("Please select a fruit to get information.")
+        else:
+                fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice1)
+                fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
+                streamlit.dataframe(fruityvice_normalized)  
+except URLError as e:
+        streamlit.error()
+  
+# streamlit.write('The user entered', fruit_choice1)
 # streamlit.text(fruityvice_response.json()) -- write a separate line to point base URL
-
 # Take the JSON version of the response and normalize it 
-fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # Output it the screen as a table
-streamlit.dataframe(fruityvice_normalized)
-#Don't tun anything past here while we troubleshoot
+# Don't tun anything past here while we troubleshoot
 streamlit.stop()
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
@@ -50,6 +54,6 @@ streamlit.dataframe(my_data_rows)
 
 fruit_choice2=streamlit.text_input('What fruit would you like information about?', 'jackfruit')
 streamlit.write('Thank you for adding', fruit_choice2)
-#This will not work correctly, but just go it for now
+# This will not work correctly, but just go it for now
 my_cur.execute("insert into FRUIT_LOAD_LIST values('from streamlit')")
 
