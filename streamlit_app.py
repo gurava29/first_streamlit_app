@@ -66,10 +66,11 @@ if streamlit.button("Add a Fruit to the List"):
         back_from_function=insert_row_snowflake(add_my_fruit)        
         streamlit.text(back_from_function)
         
+streamlit.stop()        
 # Take the JSON version of the response and normalize it 
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
-streamlit.stop()
+
  
 # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
 # streamlit.text("Hello from Snowflake:")
