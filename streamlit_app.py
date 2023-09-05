@@ -44,22 +44,28 @@ except URLError as e:
   
 # streamlit.write('The user entered', fruit_choice1)
 # streamlit.text(fruityvice_response.json()) -- write a separate line to point base URL
+streamlit.header("The fruit load list contains:")
+#Snowflake related functions
+def get_fruit_load_list():
+        with my_cnx.cursor() as my_cur
+        my_cur.execute("select * from fruit_load_list")
+        return my_data_rows = my_cur.fetchall()
+
+#Add a button to load the list
+if streamlit.button("Get Fruit Load List")
+        my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+        my_data_rows=get_fruit_load_list()
+        streamlit.dataframe(my_data_rows)
+
 # Take the JSON version of the response and normalize it 
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
 streamlit.stop()
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
+ 
 # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
-my_cur.execute("select * from fruit_load_list")
-my_data_rows = my_cur.fetchall()
 # streamlit.text("Hello from Snowflake:")
-streamlit.header("The fruit load list contains:")
-streamlit.dataframe(my_data_rows)
 
 fruit_choice2=streamlit.text_input('What fruit would you like information about?', 'jackfruit')
 streamlit.write('Thank you for adding', fruit_choice2)
 # This will not work correctly, but just go it for now
 my_cur.execute("insert into FRUIT_LOAD_LIST values('from streamlit')")
-
