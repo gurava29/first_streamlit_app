@@ -33,16 +33,16 @@ def get_fruityvice_data(this_fruit_choice):
 # New section to display fruityice api response
 streamlit.header("Fruityvice Fruit Advice!")
 try:
-        fruit_choice1=streamlit.text_input('What fruit would you like information about?')
-        if not fruit_choice1:
+        fruit_choice=streamlit.text_input('What fruit would you like information about?')
+        if not fruit_choice:
                 streamlit.error("Please select a fruit to get information.")
         else:
-                back_from_function=get_fruityvice_data(fruit_choice1)
+                back_from_function=get_fruityvice_data(fruit_choice)
                 streamlit.dataframe(back_from_function)
 except URLError as e:
         streamlit.error()
   
-# streamlit.write('The user entered', fruit_choice1)
+# streamlit.write('The user entered', fruit_choice)
 # streamlit.text(fruityvice_response.json()) -- write a separate line to point base URL
 
 streamlit.header("The fruit load list contains:")
@@ -51,13 +51,21 @@ def get_fruit_load_list():
         with my_cnx.cursor() as my_cur:
                 my_cur.execute("select * from fruit_load_list")
                 return my_cur.fetchall()
+      
+#Allow the end user to add a fruit to the list
+def insert_row_snowflake(new_fruit):
+        with my_cnx.cursor() as my_cur:
+                my_cur.execute("insert into FRUIT_LOAD_LIST values('from streamlit')")
+                return "Thank you for adding" + add_my_fruit
+                
+add_my_fruit=streamlit.text_input('What fruit would you like information about?')
 
 #Add a button to load the list
-if streamlit.button("Get Fruit Load List"):
+if streamlit.button("Add a Fruit to the List"):
         my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-        my_data_rows=get_fruit_load_list()
-        streamlit.dataframe(my_data_rows)
-
+        back_from_function=insert_row_snowflake(add_my_fruit)        
+        streamlit.text(back_from_function)
+        
 # Take the JSON version of the response and normalize it 
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
@@ -65,8 +73,3 @@ streamlit.stop()
  
 # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
 # streamlit.text("Hello from Snowflake:")
-
-fruit_choice2=streamlit.text_input('What fruit would you like information about?', 'jackfruit')
-streamlit.write('Thank you for adding', fruit_choice2)
-# This will not work correctly, but just go it for now
-my_cur.execute("insert into FRUIT_LOAD_LIST values('from streamlit')")
