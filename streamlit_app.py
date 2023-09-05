@@ -1,16 +1,18 @@
-# Importing streamlit library, which is used to build apps
 import streamlit
+import pandas as pd 
+import requests
+import snowflake.connector
+from urllib.error import URLError
+
 streamlit.title('My parents New Healthly Diner')
 streamlit.header('Breakfast Favorites')
 streamlit.text('🥣 Omega 3 & Blue Berry Oatmeal')
 streamlit.text('🥗 Kale, Spinach & Rocket Smoothie')
 streamlit.text('🐔 Harold-Boiled Free-Range Egg')
 streamlit.text('🥑🍞 Avocado Toast')
-
 streamlit.header('🍌🥭 Build Your Own Fruit Smoothie 🥝🍇')
 
-#Importing pandas library to read txt file from AWS s3 location
-import pandas as pd                
+#Importing pandas library to read txt file from AWS s3 location          
 my_fruit_list = pd.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 #setting the index Fruit
 my_fruit_list=my_fruit_list.set_index('Fruit')
@@ -26,7 +28,7 @@ streamlit.header("Fruityvice Fruit Advice!")
 fruit_choice1=streamlit.text_input('What fruit would you like information about?', 'kiwi')
 streamlit.write('The user entered', fruit_choice1)
 
-import requests
+
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice1)
 # streamlit.text(fruityvice_response.json()) -- write a separate line to point base URL
 
@@ -34,8 +36,9 @@ fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_c
 fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # Output it the screen as a table
 streamlit.dataframe(fruityvice_normalized)
-#snowflake connector
-import snowflake.connector
+#Don't tun anything past here while we troubleshoot
+streamlit.stop()
+
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 # my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
