@@ -69,7 +69,7 @@ if streamlit.button("Add a Fruit to the List"):
         back_from_function=insert_row_snowflake(add_my_fruit)        
         streamlit.text(back_from_function)
         
-# streamlit.stop()        
+streamlit.stop()        
 # Take the JSON version of the response and normalize it 
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
