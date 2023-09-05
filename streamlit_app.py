@@ -49,7 +49,7 @@ streamlit.header("The fruit load list contains:")
 #Snowflake related functions
 def get_fruit_load_list():
         with my_cnx.cursor() as my_cur:
-                my_cur.execute("select * from fruit_load_list")
+                my_cur.execute("select * from FRUIT_LOAD_LIST")
                 return my_cur.fetchall()
       
 #Allow the end user to add a fruit to the list
@@ -69,7 +69,7 @@ if streamlit.button("Add a Fruit to the List"):
         back_from_function=insert_row_snowflake(add_my_fruit)        
         streamlit.text(back_from_function)
         
-streamlit.stop()        
+# streamlit.stop()        
 # Take the JSON version of the response and normalize it 
 # Output it the screen as a table
 # Don't tun anything past here while we troubleshoot
